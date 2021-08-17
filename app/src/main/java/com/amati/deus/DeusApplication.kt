@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
+
 class DeusApplication: Application() {
 
     val applicationScope = CoroutineScope(SupervisorJob())
@@ -18,7 +19,27 @@ class DeusApplication: Application() {
     val repository by lazy { SensorRepository(database.deviceSensorDao()) }
 
     override fun onCreate() {
+//        if (BuildConfig.DEBUG) {
+//            StrictMode.setThreadPolicy(
+//                StrictMode.ThreadPolicy.Builder()
+//                    .detectDiskReads()
+//                    .detectDiskWrites()
+//                    .detectNetwork() // or .detectAll() for all detectable problems
+//                    .penaltyLog()
+//                    .penaltyDeath()
+//                    .build()
+//            )
+//            StrictMode.setVmPolicy(
+//                VmPolicy.Builder()
+//                    .detectLeakedSqlLiteObjects()
+//                    .detectLeakedClosableObjects()
+//                    .penaltyLog()
+//                    .penaltyDeath()
+//                    .build()
+//            )
+//        }
         super.onCreate()
+
 
         Timber.plant(Timber.DebugTree())
     }

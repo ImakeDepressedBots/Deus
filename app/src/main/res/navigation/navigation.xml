@@ -23,10 +23,24 @@
         android:label="fragment_set_admin_cypher"
         tools:layout="@layout/fragment_set_admin_cypher">
         <action
-            android:id="@+id/action_setAdminCypherFragment_to_mainPageFragment"
-            app:destination="@id/mainPageFragment" />
+            android:id="@+id/action_setAdminCypherFragment_to_createPrimeCypherFragment"
+            app:destination="@id/createPrimeCypherFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_setAdminCypherFragment"
         app:destination="@id/setAdminCypherFragment" />
+    <fragment
+        android:id="@+id/createPrimeCypherFragment"
+        android:name="com.amati.deus.ui.auth.CreatePrimeCypherFragment"
+        android:label="fragment_create_prime_cypher"
+        tools:layout="@layout/fragment_create_prime_cypher">
+        <action
+            android:id="@+id/action_createPrimeCypherFragment_to_dailyAuthFragment"
+            app:destination="@id/dailyAuthFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dailyAuthFragment"
+        android:name="com.amati.deus.ui.auth.DailyAuthFragment"
+        android:label="fragment_daily_auth"
+        tools:layout="@layout/fragment_daily_auth" />
 </navigation>

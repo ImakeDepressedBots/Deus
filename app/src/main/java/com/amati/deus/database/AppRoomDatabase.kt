@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
-@Database(entities = arrayOf(DeviceSensor::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(DeviceSensor::class), version = 3, exportSchema = false)
 public abstract class AppRoomDatabase : RoomDatabase() {
 
     abstract fun deviceSensorDao(): DeviceSensorDao
@@ -26,13 +26,13 @@ public abstract class AppRoomDatabase : RoomDatabase() {
 
         suspend fun populateDatabase(deviceSensorDao: DeviceSensorDao) {
             // Delete all content here
-            deviceSensorDao.deleteAll()
-
-            // Add sample Sensor
-            var sensor = DeviceSensor(0, "Sample Sensor")
-            deviceSensorDao.insert(sensor)
-            sensor = DeviceSensor(1, "Sample Sensor 2")
-            deviceSensorDao.insert(sensor)
+//            deviceSensorDao.deleteAll()
+//
+//            // Add sample Sensor
+//            var sensor = DeviceSensor(0, "Sample Sensor")
+//            deviceSensorDao.insert(sensor)
+//            sensor = DeviceSensor(1, "Sample Sensor 2")
+//            deviceSensorDao.insert(sensor)
         }
 
     }

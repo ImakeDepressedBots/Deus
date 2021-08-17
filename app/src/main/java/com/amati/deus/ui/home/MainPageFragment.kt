@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -52,6 +53,10 @@ class MainPageFragment : Fragment() {
         SensorViewModelFactory((requireActivity().application as DeusApplication).repository)
     }
 
+    val sensorListAdapter = SensorListAdapter()
+
+    private var totalSensorPower = 0f
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -72,17 +77,18 @@ class MainPageFragment : Fragment() {
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         sharedPreferencesManager = SharedPreferencesManager(requireContext())
+        checkSensorsAvailable()
 
-        binding.wakeButtonCardView.setOnClickListener {
-            binding.wakeButtonCardView.visibility = View.GONE
-            binding.timeElapsedCardView.visibility = View.VISIBLE
-            wakeUp()
-        }
-
-        binding.timeElapsedCardView.setOnClickListener {
-            Timber.d("Stop the foreground service on demand".toUpperCase(Locale.ROOT))
-            actionOnService(ServiceActions.STOP)
-        }
+//        binding.wakeButtonCardView.setOnClickListener {
+//            binding.wakeButtonCardView.visibility = View.GONE
+//            binding.timeElapsedCardView.visibility = View.VISIBLE
+//            wakeUp()
+//        }
+//
+//        binding.timeElapsedCardView.setOnClickListener {
+//            Timber.d("Stop the foreground service on demand".toUpperCase(Locale.ROOT))
+//            actionOnService(ServiceActions.STOP)
+//        }
         return binding.root
     }
 
@@ -98,21 +104,37 @@ class MainPageFragment : Fragment() {
 
 //            Timber.e(elapsedTimeSeconds.toString())
 
-            if (elapsedTimeSeconds > 0 && elapsedTimeMinutes <= 0 && elapsedTimeHours <= 0) {
-                binding.secondsElapsedTextView.visibility = View.VISIBLE
-                binding.secondsLabelTextView.visibility = View.VISIBLE
-            } else if (elapsedTimeMinutes > 0 && elapsedTimeHours <= 0) {
-                binding.minutesElapsedTextView.visibility = View.VISIBLE
-                binding.minutesLabelTextView.visibility = View.VISIBLE
-            } else if (elapsedTimeHours > 0) {
-                binding.hoursElapsedTextView.visibility = View.VISIBLE
-                binding.hoursLabelTextView.visibility = View.VISIBLE
-            }
-            binding.secondsElapsedTextView.text = elapsedTimeSeconds.toString()
-            binding.minutesElapsedTextView.text = elapsedTimeMinutes.toString()
-            binding.hoursElapsedTextView.text = elapsedTimeHours.toString()
+//            if (elapsedTimeSeconds > 0 && elapsedTimeMinutes <= 0 && elapsedTimeHours <= 0) {
+//                binding.secondsElapsedTextView.visibility = View.VISIBLE
+//                binding.secondsLabelTextView.visibility = View.VISIBLE
+//            } else if (elapsedTimeMinutes > 0 && elapsedTimeHours <= 0) {
+//                binding.minutesElapsedTextView.visibility = View.VISIBLE
+//                binding.minutesLabelTextView.visibility = View.VISIBLE
+//            } else if (elapsedTimeHours > 0) {
+//                binding.hoursElapsedTextView.visibility = View.VISIBLE
+//                binding.hoursLabelTextView.visibility = View.VISIBLE
+//            }
+//            binding.secondsElapsedTextView.text = elapsedTimeSeconds.toString()
+//            binding.minutesElapsedTextView.text = elapsedTimeMinutes.toString()
+//            binding.hoursElapsedTextView.text = elapsedTimeHours.toString()
 
         })
+        sensorViewModel.allSensors.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer { deviceSensors ->
+                sensorListAdapter.sensorData = deviceSensors
+                binding.deviceSensorsRecycler.adapter = sensorListAdapter
+                for (deviceSensor: DeviceSensor in deviceSensors) {
+                    totalSensorPower += deviceSensor.sensorPower
+                }
+                calculatePowerDraw(totalSensorPower)
+
+            })
+
+    }
+
+    private fun calculatePowerDraw(totalSensorPower: Float) {
+        //TODO: (Make Module for calculating how much power we are drawing from batt and how long left till percentage x)
     }
 
     private fun checkSensorsAvailable() {
@@ -123,19 +145,93 @@ class MainPageFragment : Fragment() {
                 requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
             val deviceSensors: List<Sensor> = sensorManager.getSensorList(Sensor.TYPE_ALL)
             updateDeviceSensorsInDb(deviceSensors)
+            checkSensorTypesAvailable()
+            sharedPreferencesManager.setHasCheckedSensors(true)
         }
 
     }
 
+    private fun checkSensorTypesAvailable() {
+
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
+            sharedPreferencesManager.setHasTypeAccelerometerSensor(true)
+        } else {
+            sharedPreferencesManager.setHasTypeAccelerometerSensor(false)
+        }
+
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE) != null) {
+            sharedPreferencesManager.setHasTypeAmbientTempSensor(true)
+        } else {
+            sharedPreferencesManager.setHasTypeAmbientTempSensor(false)
+        }
+
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY) != null) {
+            sharedPreferencesManager.setHasTypeGravitySensor(true)
+        } else {
+            sharedPreferencesManager.setHasTypeGravitySensor(false)
+        }
+
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
+            sharedPreferencesManager.setHasTypeGyroscopeSensor(true)
+        } else {
+            sharedPreferencesManager.setHasTypeGyroscopeSensor(false)
+        }
+
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT) != null) {
+            sharedPreferencesManager.setHasTypeLightSensor(true)
+        } else {
+            sharedPreferencesManager.setHasTypeLightSensor(false)
+        }
+
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) != null) {
+            sharedPreferencesManager.setHasTypeLinearAccelerationSensor(true)
+        } else {
+            sharedPreferencesManager.setHasTypeLinearAccelerationSensor(false)
+        }
+
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null) {
+            sharedPreferencesManager.setHasTypeMagneticFieldSensor(true)
+        } else {
+            sharedPreferencesManager.setHasTypeMagneticFieldSensor(false)
+        }
+
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE) != null) {
+            sharedPreferencesManager.setHasTypePressureSensor(true)
+        } else {
+            sharedPreferencesManager.setHasTypePressureSensor(false)
+        }
+
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null) {
+            sharedPreferencesManager.setHasTypeProximitySensor(true)
+        } else {
+            sharedPreferencesManager.setHasTypeProximitySensor(false)
+        }
+
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY) != null) {
+            sharedPreferencesManager.setHasTypeRelativeHumiditySensor(true)
+        } else {
+            sharedPreferencesManager.setHasTypeRelativeHumiditySensor(false)
+        }
+
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null) {
+            sharedPreferencesManager.setHasTypeRotationVectorSensor(true)
+        } else {
+            sharedPreferencesManager.setHasTypeRotationVectorSensor(false)
+        }
+    }
+
     private fun updateDeviceSensorsInDb(deviceSensors: List<Sensor>) {
         for (deviceSensor: Sensor in deviceSensors) {
-            val sensor = DeviceSensor(deviceSensor.id, deviceSensor.name)
+            val sensor = DeviceSensor(
+                deviceSensor.id, deviceSensor.name, deviceSensor.maximumRange,
+                deviceSensor.power, deviceSensor.resolution
+            )
             sensorViewModel.insert(sensor)
         }
     }
 
     private fun showAvailableSensors() {
-        TODO("Not yet implemented")
+        Toast.makeText(context, "Sensors!!", Toast.LENGTH_SHORT).show()
     }
 
 

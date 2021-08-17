@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.security.crypto.MasterKeys
 import com.amati.deus.R
 import com.amati.deus.databinding.FragmentSetAdminCypherBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -36,6 +35,8 @@ class SetAdminCypherFragment : Fragment() {
 
     private lateinit var binding: FragmentSetAdminCypherBinding
 
+    private var selectedCypher = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -54,31 +55,34 @@ class SetAdminCypherFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_set_admin_cypher, container, false)
         auth = Firebase.auth
         navController = findNavController()
-        binding.generateKeyButton.setOnClickListener {
-            generatePrivateKey()
+
+
+        binding.createCypherButton.setOnClickListener {
+            createCypher()
+//            generatePrivateKey()
+        }
+
+        binding.cypherOptionsRadio.setOnCheckedChangeListener { radioGroup, checkedId ->
+            when (checkedId) {
+                R.id.primeCypherRadioButton -> {
+                    selectedCypher = "Prime"
+                }
+                R.id.primeDecoyCypherRadioButton -> {
+                    selectedCypher = "Prime Decoy"
+                }
+            }
         }
         return binding.root
     }
 
-    private fun generatePrivateKey() {
-        val mainKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
-        Timber.e(mainKey)
-        firebaseAnonAuth()
-    }
-
-    private fun firebaseAnonAuth() {
-        auth.signInAnonymously()
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    Timber.d("signInAnonymously:success")
-                    val user = auth.currentUser
-                    val actionMainFragment =
-                        SetAdminCypherFragmentDirections.actionSetAdminCypherFragmentToMainPageFragment()
-                    navController.navigate(actionMainFragment)
-                } else {
-                    Timber.e(task.exception, "signInAnonymously:failure")
-                }
-            }
+    private fun createCypher() {
+        if (selectedCypher == "Prime") {
+            val actionPrimeCypher =
+                SetAdminCypherFragmentDirections.actionSetAdminCypherFragmentToCreatePrimeCypherFragment()
+            navController.navigate(actionPrimeCypher)
+        } else if (selectedCypher == "Prime Decoy") {
+            Timber.e("Implement This!!")
+        }
     }
 
 

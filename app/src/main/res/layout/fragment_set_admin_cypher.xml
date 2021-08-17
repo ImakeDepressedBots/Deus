@@ -19,47 +19,60 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
-                android:text="Set The Cypher To Use For Decrypting Data"
-                android:textAlignment="viewStart"
+                android:text="@string/select_cypher"
+                android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!--            <RadioGroup-->
-            <!--                android:id="@+id/cypherOptionsRadioGroup"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginStart="24dp"-->
-            <!--                android:layout_marginTop="32dp"-->
-            <!--                android:orientation="horizontal"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toBottomOf="@+id/setCypherTitleText">-->
 
-            <!--                <RadioButton-->
-            <!--                    android:id="@+id/vigenereCypherButton"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:text="Vigenere" />-->
-
-            <!--                <RadioButton-->
-            <!--                    android:id="@+id/bifidCypherButton"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:text="Bifid" />-->
-
-            <!--            </RadioGroup>-->
-
-            <Button
-                android:id="@+id/generateKeyButton"
+            <RadioGroup
+                android:id="@+id/cypherOptionsRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/generate_key_text"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/createCypherButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setCypherTitleText">
+
+                <RadioButton
+                    android:id="@+id/primeCypherRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prime" />
+
+                <RadioButton
+                    android:id="@+id/primeDecoyCypherRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prime_decoy" />
+
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/createCypherButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_cypher"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/setCypherTitleText" />
+
+
+            <!--            <Button-->
+            <!--                android:id="@+id/generateKeyButton"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="@string/create_cypher"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/setCypherTitleText" />-->
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -67,3 +80,28 @@
     </FrameLayout>
 
 </layout>
+
+
+    <!--            <RadioGroup-->
+    <!--                android:id="@+id/cypherOptionsRadioGroup"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="24dp"-->
+    <!--                android:layout_marginTop="32dp"-->
+    <!--                android:orientation="horizontal"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/setCypherTitleText">-->
+
+    <!--                <RadioButton-->
+    <!--                    android:id="@+id/vigenereCypherButton"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:text="Vigenere" />-->
+
+    <!--                <RadioButton-->
+    <!--                    android:id="@+id/bifidCypherButton"-->
+    <!--                    android:layout_width="wrap_content"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:text="Bifid" />-->
+
+    <!--            </RadioGroup>-->

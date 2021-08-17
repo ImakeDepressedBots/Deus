@@ -28,4 +28,21 @@
     <string name="mins">Mins</string>
     <string name="secs">Secs</string>
     <string name="generate_key_text">Generate Key</string>
+    <string name="sensor_icon_image_description">image view for the sensor Icon</string>
+    <string name="prime_decoy">Prime Decoy</string>
+    <string name="prime">Prime</string>
+    <string name="create_cypher">Create Cypher</string>
+    <string name="select_cypher">Select Cypher</string>
+    <string name="prime_cypher">Prime Cypher</string>
+    <string name="enter_prime_seed">Enter Prime Seed</string>
+    <string name="enter_any_prime_as_seed">Enter any prime as seed</string>
+    <string name="choose_a_cypher_for_random_sentence">Choose a cypher for random sentence</string>
+    <string name="prime_seed">Prime Seed</string>
+    <string name="caesar">Caesar</string>
+    <string name="enter_value_n_for_caesar_cypher">Enter value N for caesar cypher</string>
+    <string name="demonstration">Demonstration</string>
+    <string name="sentence">Sentence:</string>
+    <string name="example_random_sentence">Go to a river and fetch me a beast of no flesh</string>
+    <string name="cyphered">Cyphered:</string>
+    <string name="example_cyphered_text">2428219281938232083926</string>
 </resources>

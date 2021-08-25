@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.amati.deus.Constants
+import java.math.BigInteger
 
 class SharedPreferencesManager(val context: Context) {
 
@@ -35,17 +36,17 @@ class SharedPreferencesManager(val context: Context) {
         }
     }
 
-    fun setPrimeSeed(primeSeed: Int) {
+    fun setPrimeSeed(primeSeed: BigInteger) {
         val prefs: SharedPreferences = getEncryptedSharedPreferences()
         with(prefs.edit()) {
-            putInt(Constants.PREFERENCES_PRIME_SEED_KEY, primeSeed)
+            putInt(Constants.PREFERENCES_PRIME_SEED_KEY, primeSeed.toInt())
             apply()
         }
     }
 
-    fun getPrimeSeed(): Int {
+    fun getPrimeSeed(): BigInteger {
         val prefs: SharedPreferences = getEncryptedSharedPreferences()
-        return prefs.getInt(Constants.PREFERENCES_PRIME_SEED_KEY, 1)
+        return prefs.getInt(Constants.PREFERENCES_PRIME_SEED_KEY, 1).toBigInteger()
     }
 
     fun setPrimeTextCypher(primeTextCypher: String) {

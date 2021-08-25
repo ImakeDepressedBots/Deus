@@ -45,4 +45,11 @@
     <string name="example_random_sentence">Go to a river and fetch me a beast of no flesh</string>
     <string name="cyphered">Cyphered:</string>
     <string name="example_cyphered_text">2428219281938232083926</string>
+    <string name="enter_key">Enter Key</string>
+    <string name="the_river_is_in_the_other_river">The river is in the other river</string>
+    <string name="enter_the_authentication_key">Enter the authentication key</string>
+    <string name="turn">Turn</string>
+    <string name="skip">Skip</string>
+    <string name="_23s">23s</string>
+    <string name="vigenere">Vigenere</string>
 </resources>

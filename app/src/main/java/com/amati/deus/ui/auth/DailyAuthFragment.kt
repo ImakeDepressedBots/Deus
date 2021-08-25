@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.amati.deus.R
+import com.amati.deus.databinding.FragmentDailyAuthBinding
+import com.amati.deus.utils.SharedPreferencesManager
+import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +24,9 @@ class DailyAuthFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var binding: FragmentDailyAuthBinding
+    private lateinit var sharedPreferencesManager: SharedPreferencesManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,7 +40,13 @@ class DailyAuthFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_daily_auth, container, false)
+        binding = FragmentDailyAuthBinding.inflate(inflater, container, false)
+        sharedPreferencesManager = SharedPreferencesManager(requireContext())
+        Timber.e(sharedPreferencesManager.getPrimeTextCypher())
+        Timber.e(sharedPreferencesManager.getPrimeSeed().toString())
+        Timber.e(sharedPreferencesManager.getCaesarShiftNumber().toString())
+
+        return binding.root
     }
 
     companion object {

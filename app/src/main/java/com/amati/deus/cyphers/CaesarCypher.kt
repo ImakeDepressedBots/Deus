@@ -3,6 +3,8 @@ package com.amati.deus.cyphers
 import android.content.Context
 import com.amati.deus.Constants
 import com.amati.deus.utils.SharedPreferencesManager
+import timber.log.Timber
+import java.math.BigInteger
 import java.util.*
 
 class CaesarCypher(context: Context) {
@@ -11,7 +13,7 @@ class CaesarCypher(context: Context) {
         SharedPreferencesManager(context = context)
 
 
-    fun encrypt(text: String): Int? {
+    fun encrypt(text: String): BigInteger {
         val encryptedText = runEncryption(text)
         return alphabetToNumber(encryptedText)
     }
@@ -23,6 +25,7 @@ class CaesarCypher(context: Context) {
             textInput.lowercase(Locale.getDefault()).map { it.toString() }.toTypedArray()
 
         val preferencesShiftNumber = preferencesManager.getCaesarShiftNumber()
+        Timber.e(preferencesShiftNumber.toString())
         var shiftNumber = preferencesShiftNumber
         if (shiftNumber > 26) {
             shiftNumber %= 26
@@ -57,12 +60,12 @@ class CaesarCypher(context: Context) {
         return encodedText
     }
 
-    private fun alphabetToNumber(encodedText: String): Int? {
+    private fun alphabetToNumber(encodedText: String): BigInteger {
         var encodedTextArray: Array<String> = encodedText.map { it.toString() }.toTypedArray()
         var encodedNumber: String = ""
         for (encodedLetter in encodedTextArray) {
             encodedNumber += encodedTextArray.indexOf(encodedLetter)
         }
-        return encodedNumber.toIntOrNull()
+        return encodedNumber.toBigInteger()
     }
 }

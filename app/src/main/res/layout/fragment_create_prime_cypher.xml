@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/Vigenere"
-                    android:text="Vigenere" />
+                    android:text="@string/vigenere" />
 
             </RadioGroup>
 
@@ -124,6 +124,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_value_n_for_caesar_cypher"
                         android:inputType="number"
+                        android:background="null"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"

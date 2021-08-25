@@ -16,6 +16,7 @@ import com.amati.deus.R
 import com.amati.deus.databinding.FragmentCreatePrimeCypherBinding
 import com.amati.deus.utils.SharedPreferencesManager
 import timber.log.Timber
+import java.math.BigInteger
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,7 +38,7 @@ class CreatePrimeCypherFragment : Fragment() {
 
     lateinit var preferencesManager: SharedPreferencesManager
 
-    private var primeSeed: Int = 0
+    private var primeSeed: BigInteger = 0.toBigInteger()
     private var primeTextCypher: String = ""
     private var caesarNumber = 0
 
@@ -67,10 +68,10 @@ class CreatePrimeCypherFragment : Fragment() {
             if (count > 0) {
                 if (isNumberPrime(text)) {
                     binding.seedInputLayout.error = null
-                    primeSeed = text.toString().toInt()
+                    primeSeed = text.toString().toBigInteger()
                 } else {
                     binding.seedInputLayout.error = "Enter Prime Number"
-                    primeSeed = 0
+                    primeSeed = 0.toBigInteger()
                 }
             }
 //            if( text != null){
@@ -148,15 +149,19 @@ class CreatePrimeCypherFragment : Fragment() {
     }
 
     private fun createPrimeCypher() {
-        if (primeSeed != 0) {
+        if (primeSeed != 0.toBigInteger()) {
             preferencesManager.setPrimeSeed(primeSeed)
         } else {
             Toast.makeText(context, "Enter Prime Number", Toast.LENGTH_SHORT).show()
         }
+        if (!binding.caesarNumberOptionEditText.text.isEmpty()) {
+            caesarNumber = binding.caesarNumberOptionEditText.text.toString().toInt()
+        }
+
 
         if (primeTextCypher.isNotEmpty()) {
             preferencesManager.setPrimeTextCypher(primeTextCypher)
-            if (primeTextCypher.equals(Constants.CAESAR_CYPHER) && !caesarNumber.equals(0)) {
+            if (primeTextCypher == Constants.CAESAR_CYPHER && caesarNumber != 0) {
                 preferencesManager.setCaesarShiftNumber(caesarNumber)
             }
         } else {
@@ -166,7 +171,7 @@ class CreatePrimeCypherFragment : Fragment() {
     }
 
     private fun testPrimeCypher() {
-        val encodedNumber = PrimeCypher().getTestKey("The man was afraid")
+        val encodedNumber = PrimeCypher(requireContext()).getTestKey("The man was afraid")
         Timber.e("Key: $encodedNumber")
     }
 
